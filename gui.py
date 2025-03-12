@@ -394,8 +394,6 @@ class GUI:
         start_analysis = self.start_analysis_entry.get()
         end_analysis = self.end_analysis_entry.get()
 
-        if inner_v <= 0 or outer_v <= 0:
-            raise ValueError("Frame velocities must be positive.")
         if max_seg <= 0:
             raise ValueError("Simulation duration must be positive.")
 
