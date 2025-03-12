@@ -370,6 +370,7 @@ class GUI:
         avg_mag_full = np.mean(magnitude)
 
         self.ax.plot(time_in_hours, magnitude, color='#0066b2', label=f"Time-Averaged Magnitude: {avg_mag_full:.3g}")
+        self.ax.set_xlim(left=0) 
         if start_analysis is not None and end_analysis is not None:
             start_seg = next(i for i, t in enumerate(time_in_hours) if t >= start_analysis)
             end_seg = next(i for i, t in enumerate(time_in_hours) if t >= end_analysis)
@@ -479,6 +480,7 @@ class GUI:
         self.ax.set_yscale('log')
         self.ax.set_title("Resultant Acceleration Vector")
         self.ax.plot(f_time, magnitude, color='#0066b2', label=f"Time-Averaged Magnitude: {avg_mag_seg:.3g}")
+        self.ax.set_xlim(left=0) 
 
         if start_analysis is not None and end_analysis is not None:
             start_index = next(i for i, t in enumerate(f_time) if t >= start_analysis)
@@ -525,6 +527,7 @@ class GUI:
         self.components_ax.plot(time_in_hours, x_time_avg, label='X-Component', color='#0066b2')
         self.components_ax.plot(time_in_hours, y_time_avg, label='Y-Component', color='#ec1c24')
         self.components_ax.plot(time_in_hours, z_time_avg, label='Z-Component', color='#aeb0b5')
+        self.components_ax.set_xlim(left=0) 
         self.components_ax.set_xlabel('Time (hours)')
         self.components_ax.set_ylabel('Magnitude (g)')
         if legend:
