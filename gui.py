@@ -12,7 +12,7 @@ from matplotlib import rcParams
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from PIL import Image, ImageTk
 from dateutil import parser
-from dataCompile import DataProcessor, PathVisualization  
+from clary_model import DataProcessor, PathVisualization  
 import csv
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -96,8 +96,8 @@ class GUI:
         mode_frame.grid(row=0, column=0, padx=30)
 
         tk.Label(mode_frame, text="Mode", font=category_font_style).pack()
-        self.mode_var = tk.StringVar(value="Theoretical")
-        self.mode_menu = tk.OptionMenu(mode_frame, self.mode_var, "Theoretical", "Experimental", command=self._switch_mode)
+        self.mode_var = tk.StringVar(value="Theoretical (Clary)")
+        self.mode_menu = tk.OptionMenu(mode_frame, self.mode_var, "Theoretical (Clary)", "Experimental", command=self._switch_mode)
         self.mode_menu.config(font=font_style, bg="#aeb0b5", activebackground="#d6d7d9")
         self.mode_menu["menu"].config(font=("Calibri", 10), bg="#d6d7d9")
         self.mode_menu.pack()
@@ -275,7 +275,7 @@ class GUI:
         style.theme_use("yummy")
 
     def _switch_mode(self, mode):
-        if mode == "Theoretical":
+        if mode == "Theoretical (Clary)":
             self._show_theoretical_inputs()
         else:
             self._show_experimental_inputs()
@@ -405,7 +405,7 @@ class GUI:
 
     def _submit(self):
         try:
-            if self.mode_var.get() == "Theoretical":
+            if self.mode_var.get() == "Theoretical (Clary)":
                 self._process_theoretical_data()
             else:
                 self._process_experimental_data_submission()
@@ -515,7 +515,7 @@ class GUI:
         self.path_canvas_analysis.draw()
 
     def _create_time_avg_fig(self, x_time_avg, y_time_avg, z_time_avg, time_data, legend=True, title=True):
-        if self.mode_var.get() == "Theoretical":
+        if self.mode_var.get() == "Theoretical (Clary)":
             time_in_hours = [t / 3600 for t in time_data]  
         else:
             time_in_hours = time_data 
