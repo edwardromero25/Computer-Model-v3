@@ -13,7 +13,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from PIL import Image, ImageTk
 from dateutil import parser
 from dataCompile import DataProcessor, PathVisualization  
-import csv  # Add this import
+import csv
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 
