@@ -13,8 +13,22 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from PIL import Image, ImageTk
 from dateutil import parser
 from dataCompile import DataProcessor, PathVisualization  
+import csv  # Add this import
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
+
+
+class CustomToolbar(NavigationToolbar2Tk):
+    def __init__(self, canvas, parent, export_callback):
+        self.toolitems = (
+            *NavigationToolbar2Tk.toolitems,
+            ("ExportData", "Export data to CSV", "filesave", "export_data"),
+        )
+        super().__init__(canvas, parent)
+        self.export_callback = export_callback
+
+    def export_data(self):
+        self.export_callback()
 
 
 class GUI:
@@ -185,8 +199,23 @@ class GUI:
         self.ax.set_ylabel('Magnitude (g)')
         self.canvas = FigureCanvasTkAgg(self.figure, self.magnitude_frame)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.magnitude_frame)
+        self.toolbar = CustomToolbar(self.canvas, self.magnitude_frame, self._export_magnitude_data)
         self.toolbar.update()
+
+    def _export_magnitude_data(self):
+        file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+        if file_path:
+            try:
+                if not self.ax.lines:
+                    raise ValueError("No data available to export.")
+                with open(file_path, mode='w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(["Time (hours)", "Magnitude (g)"])
+                    for time, mag in zip(self.ax.lines[0].get_xdata(), self.ax.lines[0].get_ydata()):
+                        writer.writerow([time, mag])
+                messagebox.showinfo("Success", "Data exported successfully.")
+            except Exception as e:
+                messagebox.showerror("Error", str(e))
 
     def _setup_path_plots(self):
         self.path_figure = plt.Figure()
